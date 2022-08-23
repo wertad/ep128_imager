@@ -1,7 +1,7 @@
 # ep128_imager
 Windowsos segédprogram a retropie-os ep128 emulator programok 800KB-os floppy lemezképfájlra való kiírásához.
 
-- a programnak első indítást követően meg kell adni egy elérési utat, hogy honnan keresse a beérkező .rar fájlokat, valamint kiválasztani egy már csatolt 800KB-os virtuális drive-ot (csak bytre pontosan 809984 méretű 
+- a programnak első indítást követően meg kell adni egy elérési utat, hogy honnan keresse a beérkező .rar fájlokat, valamint kiválasztani egy már csatolt 800KB-os virtuális drive-ot (csak byte-ra pontosan 809984 méretű 
   meghajtót listáz és kezel, ugyanis törlési folyamat is van beleépítve, így ez egy óvintézkedés is a balesetek elkerülése végett)
 - ha nem listáz floppy drive-ot, akkor fel kell csatolni egyet pl. ImDisk-kel és újraindítani az Ep128 Imager-t.
 - ezek után amíg fut a program figyeli a megadott watchfoldert, ha abba .rar fájl kerül azt feldolgozza:
