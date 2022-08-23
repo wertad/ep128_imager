@@ -101,6 +101,7 @@ namespace Ep128_imager
             }
             else
                 System.Windows.Forms.MessageBox.Show(filePath + " is dosen't exist or archive is too big.");
+                
         }
         private static void deleteRAR(string filePath)
         {
@@ -177,7 +178,9 @@ namespace Ep128_imager
 
         private static string getBinFileName()
         {
+            // begyűjti a floppydriveról a fájlokat és visszaadja a .COM fájl nevét.
             string binFileName = "";
+            int matchCount = 0; // találat száma, ha 0 marad, akkor nem talált .COM fájlt és intézkedni kell.
 
             DirectoryInfo floppyDrive = new DirectoryInfo(Main_Form.selectedFloppyDrive);
             FileInfo[] floppyFiles = floppyDrive.GetFiles();
@@ -186,10 +189,13 @@ namespace Ep128_imager
                 if (item.Extension == ".COM")
                 {
                     binFileName = item.Name;
+                    matchCount++;
                     break;
                 }
             }
 
+            if(matchCount == 0)
+                System.Windows.Forms.MessageBox.Show("There was no \".COM\" file in the root directory. \nCheck the files in the src folder.", "Information", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Information, System.Windows.Forms.MessageBoxDefaultButton.Button1, System.Windows.Forms.MessageBoxOptions.ServiceNotification);
             return binFileName;
         }
 
@@ -206,15 +212,21 @@ namespace Ep128_imager
             string directoryName = fileName;
             string watchFolder = Main_Form.watchFolderPath;
             string baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
+            try
+            {
+                System.Diagnostics.Process process = new System.Diagnostics.Process();
+                System.Diagnostics.ProcessStartInfo startInfo = new System.Diagnostics.ProcessStartInfo();
+                //startInfo.WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden;
+                startInfo.FileName = "cmd.exe";
+                startInfo.Arguments = @"/c start " + baseDirectory + @"\rawcopy.exe -l \\.\" + driveLetter + @": " + watchFolder + @"\" + directoryName + @"\" + fileName + ".img";
+                startInfo.Verb = "runas";
+                process.StartInfo = startInfo;
+                process.Start();
+            }
+            catch (System.ComponentModel.Win32Exception)
+            {
 
-            System.Diagnostics.Process process = new System.Diagnostics.Process();
-            System.Diagnostics.ProcessStartInfo startInfo = new System.Diagnostics.ProcessStartInfo();
-            //startInfo.WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden;
-            startInfo.FileName = "cmd.exe";
-            startInfo.Arguments = @"/c start " + baseDirectory + @"\rawcopy.exe -l \\.\" + driveLetter + @": " + watchFolder + @"\" + directoryName + @"\" + fileName + ".img";
-            startInfo.Verb = "runas";
-            process.StartInfo = startInfo;
-            process.Start();
+            }
         }
     }
 }
