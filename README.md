@@ -8,7 +8,7 @@ Windowsos segédprogram a retropie-os ep128 emulator programok 800KB-os floppy l
 	1. kitömríti a _watchfolder_\PROGRAM_NEVE\src\ folderbe
 	2. letörli a .rar-t
 	3. kitörli a megadott lemezmeghajtóról az összes fájlt kivéve az EXDOS.INI-t
-	4. átírja az EXOS.INI-ben a megfelelő .COM fájlra a parancsot
+	4. átírja az EXDOS.INI-ben a megfelelő .COM fájlra a parancsot
 	5. lementi _watchfolder_\PROGRAM_NEVE\PROGRAM_NEVE.img fájlba a programot 
 - fontos tudni, hogyha hálózati meghajtót adsz meg mapped drive-val betűjelhez rendelve watchfolder-nek (pl. 'W:\' ,ami egy hálózati megosztásra van csatolva), akkor bizonyos windows verzióknál gondok lehetnek.
   Ennek eredményeképpen hiába tömöríti ki és készít elő mindent a virtuális drive-ra a program, az .img fájl nem mentődik le. Erra a megoldást egy html fájlba mellékeltem
