@@ -101,10 +101,13 @@ namespace Ep128_imager
                 {
                     archive.ExtractToDirectory(destinationFolder);
                 }
-                Main_Form._Main_Form.wtiteToConsole($"{file.Name} extarcted.");
+                Main_Form._Main_Form.wtiteToConsole($"{file.Name} extracted.");
             }
             else
-                System.Windows.Forms.MessageBox.Show(filePath + " is dosen't exist or archive is too big.");    
+            {
+                System.Windows.Forms.MessageBox.Show(filePath + " is dosen't exist or archive is too big.");
+                Main_Form._Main_Form.wtiteToConsole($"{filePath} is dosen't exist or archive is too big.");
+            }
         }
         private static void deleteRAR(string filePath, string fileName)
         {
@@ -199,13 +202,20 @@ namespace Ep128_imager
                 }
             }
 
-            if(matchCount == 0)
+            if (matchCount == 0)
+            {
                 System.Windows.Forms.MessageBox.Show("There was no \".COM\" file in the root directory. \nCheck the files in the src folder.", "Information", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Information, System.Windows.Forms.MessageBoxDefaultButton.Button1, System.Windows.Forms.MessageBoxOptions.ServiceNotification);
+                Main_Form._Main_Form.wtiteToConsole("There was no \".COM\" file in the root directory. \nCheck the files in the src folder.");
+            }
             return binFileName;
         }
 
         private static void generateExdosIni()
         {
+            if (!File.Exists(Main_Form.selectedFloppyDrive + "EXDOS.INI"))
+            {
+                File.Create(Main_Form.selectedFloppyDrive + "EXDOS.INI");
+            }
             File.SetAttributes(Main_Form.selectedFloppyDrive + "EXDOS.INI", FileAttributes.Normal);
             File.WriteAllText(Main_Form.selectedFloppyDrive + "EXDOS.INI", "load " + getBinFileName());
             File.SetAttributes(Main_Form.selectedFloppyDrive + "EXDOS.INI", FileAttributes.Hidden);

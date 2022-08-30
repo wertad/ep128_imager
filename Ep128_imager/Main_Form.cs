@@ -40,6 +40,31 @@ namespace Ep128_imager
             string now = DateTime.Now.ToString("HH:mm:ss");
             ThreadHelperClass.SetText(this, richTextBox_console, $"{now}> {message}\n");
         }
+        public static class ThreadHelperClass
+        {
+            delegate void SetTextCallback(Form f, Control ctrl, string text);
+            /// <summary>
+            /// Set text property of various controls
+            /// </summary>
+            /// <param name="form">The calling form</param>
+            /// <param name="ctrl"></param>
+            /// <param name="text"></param>
+            public static void SetText(Form form, Control ctrl, string text)
+            {
+                // InvokeRequired required compares the thread ID of the 
+                // calling thread to the thread ID of the creating thread. 
+                // If these threads are different, it returns true. 
+                if (ctrl.InvokeRequired)
+                {
+                    SetTextCallback d = new SetTextCallback(SetText);
+                    form.Invoke(d, new object[] { form, ctrl, text });
+                }
+                else
+                {
+                    ctrl.Text += text;
+                }
+            }
+        }
 
         private void listFloppyDrives()
         {
@@ -98,32 +123,6 @@ namespace Ep128_imager
         private void comboBox_ImageDrives_SelectedIndexChanged(object sender, EventArgs e)
         {
             selectedFloppyDrive = comboBox_ImageDrives.Text;
-        }
-    }
-
-    public static class ThreadHelperClass
-    {
-        delegate void SetTextCallback(Form f, Control ctrl, string text);
-        /// <summary>
-        /// Set text property of various controls
-        /// </summary>
-        /// <param name="form">The calling form</param>
-        /// <param name="ctrl"></param>
-        /// <param name="text"></param>
-        public static void SetText(Form form, Control ctrl, string text)
-        {
-            // InvokeRequired required compares the thread ID of the 
-            // calling thread to the thread ID of the creating thread. 
-            // If these threads are different, it returns true. 
-            if (ctrl.InvokeRequired)
-            {
-                SetTextCallback d = new SetTextCallback(SetText);
-                form.Invoke(d, new object[] { form, ctrl, text });
-            }
-            else
-            {
-                ctrl.Text += text;
-            }
         }
     }
 }
