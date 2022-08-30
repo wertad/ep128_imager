@@ -23,14 +23,13 @@ namespace Ep128_imager
         {
             InitializeComponent();
             _Main_Form = this;
-            
-            wtiteToConsole($"Monitoring of watch folder has started...");
 
             listFloppyDrives();
             textBox_watchFolder.Text = watchFolderPath;
             startWatching();
+            wtiteToConsole($"Monitoring of watch folder has started...");
             //Functions.clearFloppy();
-            
+
         }
         public void wtiteToConsole(string message)
         {
