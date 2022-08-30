@@ -20,7 +20,7 @@ namespace Ep128_imager
             FileSystemWatcher watcher = new FileSystemWatcher();
             watcher.Path = Main_Form.watchFolderPath;
             watcher.IncludeSubdirectories = false;
-            watcher.NotifyFilter = NotifyFilters.CreationTime;
+            watcher.NotifyFilter = watcher.NotifyFilter | NotifyFilters.CreationTime;
             watcher.Filter = "*.RAR";
             watcher.EnableRaisingEvents = true;
             watcher.InternalBufferSize = 24000;
