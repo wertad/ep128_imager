@@ -95,6 +95,12 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="5floppy_mount.ico">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="dd.exe">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="rawcopy.exe">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

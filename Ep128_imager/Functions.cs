@@ -13,7 +13,8 @@ namespace Ep128_imager
 {
     internal class Functions
     {
-        //private static bool extracted = false;
+        static string baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
+
         public static void watchFolder()
         {
             FileSystemWatcher watcher = new FileSystemWatcher();
@@ -31,13 +32,15 @@ namespace Ep128_imager
             string directoryName = e.Name.Substring(0, e.Name.Length - 4);
             string newDirectory = Main_Form.watchFolderPath + @"\" + directoryName + @"\src";
 
+            Main_Form._Main_Form.wtiteToConsole($"Found new file: {e.Name}");
             Directory.CreateDirectory(newDirectory);
+            Main_Form._Main_Form.wtiteToConsole($"{directoryName} directory created.");
             extractRAR(e.FullPath, newDirectory);
-            deleteRAR(e.FullPath);
+            deleteRAR(e.FullPath, e.Name);
             clearFloppy(); // letörli a kiválasztott floppy driveról az összes fájlt, kivéve az EXDOS.INI-t
             copyGameFiles(newDirectory); // átmásolja a kitömörített játék fájljait a floppy drive-ra
             generateExdosIni(); // legenerálja a megfelelő INI fájlt.
-            createImgFile(directoryName);
+            createImgFile(directoryName); // a rawcopy.exe-vel legyártja a floppydrive-ból az .img fájlt.  
         }
 
         //
@@ -98,18 +101,19 @@ namespace Ep128_imager
                 {
                     archive.ExtractToDirectory(destinationFolder);
                 }
+                Main_Form._Main_Form.wtiteToConsole($"{file.Name} extarcted.");
             }
             else
-                System.Windows.Forms.MessageBox.Show(filePath + " is dosen't exist or archive is too big.");
-                
+                System.Windows.Forms.MessageBox.Show(filePath + " is dosen't exist or archive is too big.");    
         }
-        private static void deleteRAR(string filePath)
+        private static void deleteRAR(string filePath, string fileName)
         {
             // csak akkor töröl, ha .rar vagy .RAR kiterjesztésű fájlt kap
             // biztos, ami biztos
             if ((filePath.Substring(filePath.Length - 4, 4) == ".rar") || (filePath.Substring(filePath.Length - 4, 4) == ".RAR"))
             {
                     File.Delete(filePath);
+                    Main_Form._Main_Form.wtiteToConsole($"{fileName} deleted.");
             }
         }
 
@@ -147,6 +151,7 @@ namespace Ep128_imager
                             Console.WriteLine(FloppyFile.FullName);
                             File.SetAttributes(FloppyFile.FullName, FileAttributes.Normal); // enélkül nincs joga törölni a fájlt
                             File.Delete(FloppyFile.FullName);
+                            Main_Form._Main_Form.wtiteToConsole($"All files deleted from {Main_Form.selectedFloppyDrive}: drive (except EXDOS.INI).");                           
                         }
                     }
                 }
@@ -211,22 +216,32 @@ namespace Ep128_imager
             string driveLetter = Main_Form.selectedFloppyDrive.Substring(0, 1);
             string directoryName = fileName;
             string watchFolder = Main_Form.watchFolderPath;
-            string baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
             try
             {
-                System.Diagnostics.Process process = new System.Diagnostics.Process();
-                System.Diagnostics.ProcessStartInfo startInfo = new System.Diagnostics.ProcessStartInfo();
-                //startInfo.WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden;
-                startInfo.FileName = "cmd.exe";
-                startInfo.Arguments = @"/c start " + baseDirectory + @"\rawcopy.exe -l \\.\" + driveLetter + @": " + watchFolder + @"\" + directoryName + @"\" + fileName + ".img";
-                startInfo.Verb = "runas";
-                process.StartInfo = startInfo;
-                process.Start();
+                RunWithRedirect($@"{baseDirectory}\rawcopy.exe -l \\.\{driveLetter}: {watchFolder}\{directoryName}\{fileName}.img > {baseDirectory}\rawcopy.temp 2>&1");
             }
             catch (System.ComponentModel.Win32Exception)
             {
-
+                // Ha az cmd admin futtatásakor felugró UAC ablakra No válasz érkezne, akkor ide kerül.
             }
+        }
+        static void RunWithRedirect(string cmdargs)
+        {
+            // Futtatja a megadott paraméterekkel a cmd.exe-t
+            // a kimenetet és a hibákat átirányítja a Main_Form textboxába
+            var proc = new Process()
+            {
+                StartInfo = new ProcessStartInfo("cmd.exe", "/c " + cmdargs)
+                {
+                    CreateNoWindow = false,
+                    UseShellExecute = true,
+                    Verb = "runas"
+                },
+            };
+            proc.Start();
+            proc.WaitForExit();
+
+            Main_Form._Main_Form.wtiteToConsole(File.ReadAllText($@"{baseDirectory}\rawcopy.temp"));
         }
     }
 }

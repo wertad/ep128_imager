@@ -34,19 +34,20 @@
             this.label_watchFolder = new System.Windows.Forms.Label();
             this.comboBox_ImageDrives = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
+            this.richTextBox_console = new System.Windows.Forms.RichTextBox();
             this.SuspendLayout();
             // 
             // textBox_watchFolder
             // 
-            this.textBox_watchFolder.Location = new System.Drawing.Point(22, 43);
+            this.textBox_watchFolder.Location = new System.Drawing.Point(8, 43);
             this.textBox_watchFolder.Name = "textBox_watchFolder";
-            this.textBox_watchFolder.Size = new System.Drawing.Size(266, 20);
+            this.textBox_watchFolder.Size = new System.Drawing.Size(449, 20);
             this.textBox_watchFolder.TabIndex = 0;
             this.textBox_watchFolder.TextChanged += new System.EventHandler(this.textBox_watchFolder_TextChanged);
             // 
             // button_watchBrowser
             // 
-            this.button_watchBrowser.Location = new System.Drawing.Point(290, 42);
+            this.button_watchBrowser.Location = new System.Drawing.Point(457, 42);
             this.button_watchBrowser.Name = "button_watchBrowser";
             this.button_watchBrowser.Size = new System.Drawing.Size(26, 23);
             this.button_watchBrowser.TabIndex = 1;
@@ -57,7 +58,7 @@
             // label_watchFolder
             // 
             this.label_watchFolder.AutoSize = true;
-            this.label_watchFolder.Location = new System.Drawing.Point(22, 24);
+            this.label_watchFolder.Location = new System.Drawing.Point(8, 24);
             this.label_watchFolder.Name = "label_watchFolder";
             this.label_watchFolder.Size = new System.Drawing.Size(71, 13);
             this.label_watchFolder.TabIndex = 2;
@@ -67,26 +68,39 @@
             // 
             this.comboBox_ImageDrives.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBox_ImageDrives.FormattingEnabled = true;
-            this.comboBox_ImageDrives.Location = new System.Drawing.Point(22, 104);
+            this.comboBox_ImageDrives.Location = new System.Drawing.Point(489, 43);
             this.comboBox_ImageDrives.Name = "comboBox_ImageDrives";
-            this.comboBox_ImageDrives.Size = new System.Drawing.Size(121, 21);
+            this.comboBox_ImageDrives.Size = new System.Drawing.Size(125, 21);
             this.comboBox_ImageDrives.TabIndex = 3;
             this.comboBox_ImageDrives.SelectedIndexChanged += new System.EventHandler(this.comboBox_ImageDrives_SelectedIndexChanged);
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(25, 85);
+            this.label1.Location = new System.Drawing.Point(479, 24);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(147, 13);
             this.label1.TabIndex = 4;
             this.label1.Text = "Floppy Image Drives (800KB):";
             // 
+            // richTextBox_console
+            // 
+            this.richTextBox_console.BackColor = System.Drawing.Color.Black;
+            this.richTextBox_console.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.richTextBox_console.ForeColor = System.Drawing.Color.White;
+            this.richTextBox_console.Location = new System.Drawing.Point(0, 71);
+            this.richTextBox_console.Name = "richTextBox_console";
+            this.richTextBox_console.ReadOnly = true;
+            this.richTextBox_console.Size = new System.Drawing.Size(626, 418);
+            this.richTextBox_console.TabIndex = 5;
+            this.richTextBox_console.Text = "";
+            // 
             // Main_Form
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(344, 165);
+            this.ClientSize = new System.Drawing.Size(626, 489);
+            this.Controls.Add(this.richTextBox_console);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.comboBox_ImageDrives);
             this.Controls.Add(this.label_watchFolder);
@@ -109,6 +123,7 @@
         private System.Windows.Forms.Label label_watchFolder;
         private System.Windows.Forms.ComboBox comboBox_ImageDrives;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.RichTextBox richTextBox_console;
     }
 }
 

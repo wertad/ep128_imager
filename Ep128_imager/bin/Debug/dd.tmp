@@ -1,0 +1,5 @@
+rawwrite dd for windows version 0.6beta3.
+Written by John Newbigin <jn@it.swin.edu.au>
+This program is covered by terms of the GPL Version 2.
+
+Error opening input file: 32 The process cannot access the file because it is being used by another process
