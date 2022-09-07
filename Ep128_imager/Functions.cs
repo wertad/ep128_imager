@@ -214,7 +214,7 @@ namespace Ep128_imager
         {
             if (!File.Exists(Main_Form.selectedFloppyDrive + "EXDOS.INI"))
             {
-                File.Create(Main_Form.selectedFloppyDrive + "EXDOS.INI");
+                using (File.Create(Main_Form.selectedFloppyDrive + "EXDOS.INI")) ;
             }
             File.SetAttributes(Main_Form.selectedFloppyDrive + "EXDOS.INI", FileAttributes.Normal);
             File.WriteAllText(Main_Form.selectedFloppyDrive + "EXDOS.INI", "load " + getBinFileName());
