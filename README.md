@@ -13,4 +13,5 @@ Windowsos segédprogram a retropie-os ep128 emulator programok 800KB-os floppy l
 - fontos tudni, hogyha hálózati meghajtót adsz meg mapped drive-val betűjelhez rendelve watchfolder-nek (pl. 'W:\' ,ami egy hálózati megosztásra van csatolva), akkor bizonyos windows verzióknál gondok lehetnek.
   Ennek eredményeképpen hiába tömöríti ki és készít elő mindent a virtuális drive-ra a program, az .img fájl nem mentődik le. Erra a megoldást egy html fájlba mellékeltem
  
-	![ep128](https://user-images.githubusercontent.com/17532282/194718804-86c6974b-0737-4ee6-9eac-0ae9487bf892.png)
+ 
+![ep128](https://user-images.githubusercontent.com/17532282/194718804-86c6974b-0737-4ee6-9eac-0ae9487bf892.png)
