@@ -55,12 +55,7 @@ namespace Ep128_imager
         {
             try
             {
-                //Ahhoz, hogy használni tujda a ConfigurationManagert a következőket kell tenni:
-                //
                 //You have also to add the reference to the assembly System.Configuration.dll , by
-                //1. - Right - click on the References / Dependencies
-                //2. - Choose Add Reference
-                //3. - Find and add System.Configuration.
 
                 var configFile = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
                 var settings = configFile.AppSettings.Settings;
