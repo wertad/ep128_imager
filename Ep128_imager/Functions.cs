@@ -16,6 +16,7 @@ namespace Ep128_imager
         static string baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
         static string lastFileName = "";
 
+        //watchfolder
         public static void watchFolder()
         {
             FileSystemWatcher watcher = new FileSystemWatcher();
