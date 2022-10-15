@@ -14,13 +14,13 @@ namespace Ep128_imager
     internal class Functions
     {
         static string baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
+        static string lastFileName = "";
 
         public static void watchFolder()
         {
             FileSystemWatcher watcher = new FileSystemWatcher();
             watcher.Path = Main_Form.watchFolderPath;
             watcher.IncludeSubdirectories = false;
-            watcher.NotifyFilter = watcher.NotifyFilter | NotifyFilters.CreationTime;
             watcher.Filter = "*.RAR";
             watcher.EnableRaisingEvents = true;
             watcher.InternalBufferSize = 24000;
@@ -32,15 +32,20 @@ namespace Ep128_imager
             string directoryName = e.Name.Substring(0, e.Name.Length - 4);
             string newDirectory = Main_Form.watchFolderPath + @"\" + directoryName + @"\src";
 
-            Main_Form._Main_Form.wtiteToConsole($"Found new file: {e.Name}");
-            Directory.CreateDirectory(newDirectory);
-            Main_Form._Main_Form.wtiteToConsole($"{directoryName} directory created.");
-            extractRAR(e.FullPath, newDirectory);
-            deleteRAR(e.FullPath, e.Name);
-            clearFloppy(); // letörli a kiválasztott floppy driveról az összes fájlt, kivéve az EXDOS.INI-t
-            copyGameFiles(newDirectory); // átmásolja a kitömörített játék fájljait a floppy drive-ra
-            generateExdosIni(); // legenerálja a megfelelő INI fájlt.
-            createImgFile(directoryName); // a rawcopy.exe-vel legyártja a floppydrive-ból az .img fájlt.  
+            if (lastFileName != directoryName)
+            {
+                lastFileName = directoryName;
+
+                Main_Form._Main_Form.wtiteToConsole($"Found new file: {e.Name}");
+                Directory.CreateDirectory(newDirectory);
+                Main_Form._Main_Form.wtiteToConsole($"{directoryName} directory created.");
+                extractRAR(e.FullPath, newDirectory);
+                deleteRAR(e.FullPath, e.Name);
+                clearFloppy(); // letörli a kiválasztott floppy driveról az összes fájlt, kivéve az EXDOS.INI-t
+                copyGameFiles(newDirectory); // átmásolja a kitömörített játék fájljait a floppy drive-ra
+                generateExdosIni(); // legenerálja a megfelelő INI fájlt.
+                createImgFile(directoryName); // a rawcopy.exe-vel legyártja a floppydrive-ból az .img fájlt.  
+            }
         }
 
         //
@@ -50,7 +55,7 @@ namespace Ep128_imager
         {
             try
             {
-                //You have also to add the reference to the assembly System.Configuration.dll
+                //You have also to add the reference to the assembly System.Configuration.dll , by
 
                 var configFile = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
                 var settings = configFile.AppSettings.Settings;
@@ -209,7 +214,7 @@ namespace Ep128_imager
         {
             if (!File.Exists(Main_Form.selectedFloppyDrive + "EXDOS.INI"))
             {
-                File.Create(Main_Form.selectedFloppyDrive + "EXDOS.INI");
+                using (File.Create(Main_Form.selectedFloppyDrive + "EXDOS.INI")) ;
             }
             File.SetAttributes(Main_Form.selectedFloppyDrive + "EXDOS.INI", FileAttributes.Normal);
             File.WriteAllText(Main_Form.selectedFloppyDrive + "EXDOS.INI", "load " + getBinFileName());
@@ -223,7 +228,9 @@ namespace Ep128_imager
             string watchFolder = Main_Form.watchFolderPath;
             try
             {
+                //string command = $"{baseDirectory}\\rawcopy.exe -l \\\\.\\\"{driveLetter}: {watchFolder}\\{directoryName}\\{fileName}.img\" > {baseDirectory}\\rawcopy.temp 2>&1";
                 RunWithRedirect($@"{baseDirectory}\rawcopy.exe -l \\.\{driveLetter}: {watchFolder}\{directoryName}\{fileName}.img > {baseDirectory}\rawcopy.temp 2>&1");
+                //RunWithRedirect($"{baseDirectory}\\rawcopy.exe -l \\\\.\\\"{driveLetter}: {watchFolder}\\{directoryName}\\{fileName}.img\" > {baseDirectory}\\rawcopy.temp 2>&1");
             }
             catch (System.ComponentModel.Win32Exception)
             {
